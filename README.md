@@ -4,8 +4,7 @@ A cookiecutter tamplate for starting a django project in a beautifully isolated 
 
 ## Requirements
 * python
-* zc.buildout `easy_install zc.buildout`
-
+* cookiecutter `pip install cookiecutter`
 
 ## HowTo
 
