@@ -1,0 +1,10 @@
+
+
+# Buildout
+bin/
+repos/
+.installed.cfg
+.mr.developer.cfg
+eggs/
+develop-eggs/
+*.egg-info/
