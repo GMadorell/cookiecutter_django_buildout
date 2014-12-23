@@ -8,3 +8,11 @@ repos/
 eggs/
 develop-eggs/
 *.egg-info/
+
+# Virtual environment
+venv/
+
+
+# Configuration
+src/{{ cookiecutter.repo_name }}/config/keys/
+src/{{ cookiecutter.repo_name }}/config/plain/

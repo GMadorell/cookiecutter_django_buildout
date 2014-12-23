@@ -13,6 +13,19 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+# Paths and helpers for secret settings
+BASE_CONFIG = os.path.join(os.path.dirname(__file__), "config")
+CONFIG_DIRNAME = os.path.join(BASE_CONFIG, "plain")
+ENCRYPTED_DIRNAME = os.path.join(BASE_CONFIG, "encrypted")
+KEYS_DIR = os.path.join(BASE_CONFIG, "keys")
+
+enc_path = lambda enc_filename: os.path.join(ENCRYPTED_DIRNAME, enc_filename)
+get_key = lambda: open(os.path.join(KEYS_DIR, "cfg_key.key")).read()
+
+# Example usage for secret settings (key will not be on version control)
+# sec_settings = EncryptedJson(enc_path("secret_settings.json"), get_key())
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
