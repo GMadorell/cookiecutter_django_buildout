@@ -8,6 +8,12 @@ rm gen_key.sh
 
 bash init.sh
 
+mv .gitignore_template .gitignore
+
+bin/fab encrypt_config
+
+bin/compass create src/assets -r bootstrap-sass --using bootstrap
+
 git init
 git add .
 git commit -m "First commit"

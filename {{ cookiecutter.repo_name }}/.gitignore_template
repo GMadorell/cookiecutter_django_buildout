@@ -13,6 +13,6 @@ develop-eggs/
 venv/
 
 
-# Configuration
-src/{{ cookiecutter.repo_name }}/config/keys/
-src/{{ cookiecutter.repo_name }}/config/plain/
+aws.cfg
+
+.sass-cache

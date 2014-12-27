@@ -1,5 +1,5 @@
 """
-Django settings for project project.
+Django settings for djagolb project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -10,10 +10,11 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from encryptedfiles.encryptedjson import EncryptedFile
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_PROJECT = os.path.dirname(__file__)
 
-
-# Paths and helpers for secret settings
 BASE_CONFIG = os.path.join(os.path.dirname(__file__), "config")
 CONFIG_DIRNAME = os.path.join(BASE_CONFIG, "plain")
 ENCRYPTED_DIRNAME = os.path.join(BASE_CONFIG, "encrypted")
@@ -22,75 +23,34 @@ KEYS_DIR = os.path.join(BASE_CONFIG, "keys")
 enc_path = lambda enc_filename: os.path.join(ENCRYPTED_DIRNAME, enc_filename)
 get_key = lambda: open(os.path.join(KEYS_DIR, "cfg_key.key")).read()
 
-# Example usage for secret settings (key will not be on version control)
-# sec_settings = EncryptedJson(enc_path("secret_settings.json"), get_key())
+def setup_encrypted_settings(settings_name):
+    print("Trying to import {} settings.".format(settings_name))
+    settings_py_name = "{}.py".format(settings_name)
+    settings_tmp_path = os.path.join(BASE_PROJECT, settings_py_name)
+    with open(settings_tmp_path, "w") as settings_tmp:
+        settings_enc_file = EncryptedFile(enc_path(settings_py_name), get_key())
+        settings_tmp_content = settings_enc_file.read()
+        settings_tmp.write(settings_tmp_content)
+    return settings_tmp_path
+
+tmp_path = setup_encrypted_settings("common")
+try:
+    from .common import *
+finally:
+    os.remove(tmp_path)
+
+if os.environ.get("DJANGO_PRODUCTION", False):
+    tmp_path = setup_encrypted_settings("production")
+    try:
+        from .production import *
+    finally:
+        os.remove(tmp_path)
+else:
+    tmp_path = setup_encrypted_settings("development")
+    try:
+        from .development import *
+    finally:
+        os.remove(tmp_path)
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ctolrhi!vx*&rxpc9__b@anp(z^b6*+$#cy$zfv#@*q$8p3as^'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
-INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
-
-ROOT_URLCONF = '{{ cookiecutter.repo_name }}.urls'
-
-WSGI_APPLICATION = '{{ cookiecutter.repo_name }}.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
-STATIC_URL = '/static/'
