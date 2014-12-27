@@ -6,6 +6,7 @@ repos/
 .installed.cfg
 .mr.developer.cfg
 eggs/
+parts/
 develop-eggs/
 *.egg-info/
 
