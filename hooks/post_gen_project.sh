@@ -8,7 +8,8 @@ rm gen_key.sh
 
 bash init.sh
 
-mv .gitignore_template .gitignore
+# .gitignore_template -> .gitignore, recursively.
+find . -iname ".gitignore_template" -exec rename "s/.gitignore_template/.gitignore/" '{}' \;
 
 bin/fab encrypt_config
 
