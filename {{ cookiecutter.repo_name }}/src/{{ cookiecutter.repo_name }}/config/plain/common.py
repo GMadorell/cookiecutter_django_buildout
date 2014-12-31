@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django.contrib.sites",
+    "aldjemy",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,23 +75,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
-# Compressor - Sass
-STATICFILES_FINDERS += ('compressor.finders.CompressorFinder',)
-COMPRESS_ROOT = ASSETS_DIR
-
-COMPRESS_PRECOMPILERS = (
-    ('text/x-sass', 'sass --compass "{infile}" "{outfile}"'),
-    ('text/x-scss', 'sass --scss --compass "{infile}" "{outfile}"'),
-)
-
-COMPRESS_OFFLINE = True
-COMPRESS_ENABLED = True
-
-# Compass
-COMPASS_INPUT = os.path.join(ASSETS_DIR, "sass")
-COMPASS_OUTPUT = os.path.join(ASSETS_DIR, "css")
-COMPASS_STYLE = "compact"
 
 # Templates
 TEMPLATE_CONTEXT_PROCESSORS += ("django.core.context_processors.request",)
