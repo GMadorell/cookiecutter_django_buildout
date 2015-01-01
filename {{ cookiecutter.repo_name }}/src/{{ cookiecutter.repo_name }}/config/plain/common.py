@@ -78,3 +78,6 @@ STATICFILES_FINDERS = (
 
 # Templates
 TEMPLATE_CONTEXT_PROCESSORS += ("django.core.context_processors.request",)
+
+# Sites framework
+SITE_ID = 1
